@@ -227,120 +227,38 @@ const WayfindingDemo = () => {
               </CardHeader>
               <CardContent>
                 {/* Floor Selector */}
-                <div className="flex space-x-2 mb-4">
+                <div className="flex flex-wrap gap-2 mb-4">
                   {floors.map((floor, index) => (
                     <Button
                       key={index}
                       size="sm"
                       variant={selectedFloor === index ? "default" : "outline"}
                       onClick={() => setSelectedFloor(index)}
+                      className="relative"
                     >
                       {floor}
+                      <Badge variant="secondary" className="ml-2 h-4 text-xs">
+                        {locations.filter(loc => loc.floorLevel === index).length}
+                      </Badge>
                     </Button>
                   ))}
                 </div>
 
-                <div className="relative rounded-lg p-4 h-96 bg-gray-50">
-                  {/* Building Map Background */}
-                  <div 
-                    className="absolute inset-4 bg-center bg-contain bg-no-repeat rounded"
-                    style={{
-                      backgroundImage: `url(/lovable-uploads/761d1a64-0576-4934-9b6a-4817ce626973.png)`
-                    }}
-                  >
-                    {/* Location markers for current floor */}
-                    {currentFloorLocations.map((location) => (
-                      <div
-                        key={location.id}
-                        className={`absolute w-3 h-3 rounded-full transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 cursor-pointer ${
-                          selectedDestination === location.id 
-                            ? 'bg-red-500 ring-4 ring-red-200 animate-pulse scale-150' 
-                            : 'bg-blue-500 hover:bg-blue-600 hover:scale-125'
-                        }`}
-                        style={{
-                          left: `${location.coordinates.x}%`,
-                          top: `${location.coordinates.y}%`
-                        }}
-                        title={location.name}
-                        onClick={() => handleStartNavigation(location.id)}
-                      />
-                    ))}
-                    
-                    {/* Navigation path simulation */}
-                    {isNavigating && selectedLocation && selectedLocation.floorLevel === selectedFloor && (
-                      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                        <path
-                          d={`M 50 85 Q 60 70 ${selectedLocation.coordinates.x} ${selectedLocation.coordinates.y}`}
-                          stroke="#22c55e"
-                          strokeWidth="3"
-                          fill="none"
-                          strokeDasharray="8,4"
-                          className="animate-pulse"
-                        />
-                      </svg>
-                    )}
-
-                    {/* You are here marker (only on ground floor) */}
-                    {selectedFloor === 0 && (
-                      <div 
-                        className="absolute w-5 h-5 bg-green-500 rounded-full transform -translate-x-1/2 -translate-y-1/2 ring-4 ring-green-200 border-2 border-white"
-                        style={{ left: '50%', top: '85%' }}
-                        title="You are here"
-                      />
-                    )}
-                  </div>
-                  
-                  {/* Enhanced Legend */}
-                  <div className="absolute bottom-4 right-4 bg-white p-4 rounded-lg border shadow-sm">
-                    <div className="text-xs font-medium mb-3">Legend</div>
-                    <div className="space-y-2 text-xs">
-                      {selectedFloor === 0 && (
-                        <div className="flex items-center">
-                          <div className="w-3 h-3 bg-green-500 rounded-full mr-2 ring-2 ring-green-200"></div>
-                          <span>Your Location</span>
-                        </div>
-                      )}
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                        <span>Available Rooms</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                        <span>Navigation Target</span>
-                      </div>
-                      <div className="flex items-center">
-                        <div className="w-4 h-1 bg-green-500 mr-2 opacity-75"></div>
-                        <span>Navigation Path</span>
-                      </div>
-                      <div className="border-t pt-2 mt-2">
-                        <div className="text-xs text-muted-foreground">
-                          Floor: {floors[selectedFloor]}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Rooms: {currentFloorLocations.length}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                {/* Interactive Mappedin Wayfinding */}
+                <div className="relative rounded-lg border bg-card overflow-hidden">
+                  <iframe 
+                    src="https://app.mappedin.com/map/68d24cee0bc9b1000b90f92f?embedded=true"
+                    title="Interactive Wayfinding Map" 
+                    name="Mappedin Map" 
+                    allow="clipboard-write 'self' https://app.mappedin.com; web-share 'self' https://app.mappedin.com" 
+                    scrolling="no" 
+                    width="100%" 
+                    height="650" 
+                    frameBorder="0" 
+                    style={{ border: 0 }}
+                    className="w-full"
+                  />
                 </div>
-                
-                {isNavigating && selectedLocation && (
-                  <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-                    <h4 className="font-medium text-blue-900">Navigating to {selectedLocation.name}</h4>
-                    <p className="text-sm text-blue-700 mt-1">
-                      Follow the highlighted path • {selectedLocation.floor} • {selectedLocation.section}
-                    </p>
-                    <div className="flex items-center mt-2 text-sm text-blue-600">
-                      <Zap className="mr-1 h-3 w-3" />
-                      Estimated arrival: 2 minutes
-                    </div>
-                    {selectedLocation.floorLevel !== 0 && (
-                      <p className="text-xs text-blue-600 mt-1">
-                        Take elevator to {selectedLocation.floor}
-                      </p>
-                    )}
-                  </div>
-                )}
               </CardContent>
             </Card>
           </div>
