@@ -25,17 +25,23 @@ export const HeroSection = () => {
           </h1>
           
           <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Effortless room reservations and intuitive wayfinding designed for modern offices. 
-            Seamlessly integrate with your workflow while supporting teams worldwide.
+            Effortless room reservations and intuitive wayfinding tailored for UNDP facilities. 
+            Seamlessly integrate with your development workflow while supporting global teams and missions.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <a href="https://undp.risangsaputra.site" target="_blank" rel="noopener noreferrer">
+            <Link to="/booking-demo">
               <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 py-6">
                 <Calendar className="mr-2 h-5 w-5" />
                 Try Booking Demo
               </Button>
-            </a>
+            </Link>
+            <Link to="/room-booking">
+              <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+                <Monitor className="mr-2 h-5 w-5" />
+                Smart Booking System
+              </Button>
+            </Link>
             <Link to="/wayfinding-demo">
               <Button size="lg" variant="outline" className="text-lg px-8 py-6">
                 <MapPin className="mr-2 h-5 w-5" />
